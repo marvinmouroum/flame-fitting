@@ -11,7 +11,7 @@ additional_options = {'include_dirs': []}
 if platform.system().lower() in ['darwin', 'linux']:
     import sysconfig
     extra_compile_args = sysconfig.get_config_var('CFLAGS').split()
-    extra_compile_args += ["-std=c++11"]
+    extra_compile_args += ["-std=c++14"]
     additional_options['extra_compile_args'] = extra_compile_args
 
 if platform.system().lower() in ['darwin']:
@@ -19,7 +19,7 @@ if platform.system().lower() in ['darwin']:
     extra_link_args=['-stdlib=libc++'] 
 
 # Add path of EIGEN here
-EIGEN_DIR = './eigen'
+EIGEN_DIR = '../../../eigen'
 
 def setup_extended(parallel=True, numpy_includes=True, usr_local_includes=True, **kwargs):
     """Like "setup" from distutils

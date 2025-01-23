@@ -239,7 +239,7 @@ class MeshDistanceSquared(Ch):
 class _AabbTree(object):
     """Encapsulates an AABB (Axis Aligned Bounding Box) Tree """
     def __init__(self, v, f):
-        import psbody.mesh.spatialsearch as spatialsearch
+        import psbody_mac.mesh.spatialsearch as spatialsearch
         self.cpp_handle = spatialsearch.aabbtree_compute(v.astype(np.float64).copy(order='C'), f.astype(np.uint32).copy(order='C'))
 
         if True:  # FOR PICKLING TEST
@@ -248,7 +248,7 @@ class _AabbTree(object):
 
     def nearest(self, v_samples, nearest_part=False):
         "nearest_part tells you whether the closest point in triangle abc is in the interior (0), on an edge (ab:1,bc:2,ca:3), or a vertex (a:4,b:5,c:6)"
-        import psbody.mesh.spatialsearch as spatialsearch
+        import psbody_mac.mesh.spatialsearch as spatialsearch
         f_idxs, f_part, v = spatialsearch.aabbtree_nearest(self.cpp_handle, np.array(v_samples, dtype=np.float64, order='C'))
 
         # if False:  # FOR VISUALIZING CORRESPONDENCES
@@ -281,7 +281,7 @@ class _AabbTree(object):
         self.vv = d['vv']
         self.ff = d['ff']
 
-        import psbody.mesh.spatialsearch as spatialsearch
+        import psbody_mac.mesh.spatialsearch as spatialsearch
         self.cpp_handle = spatialsearch.aabbtree_compute(self.vv.astype(np.float64).copy(order='C'), self.ff.astype(np.uint32).copy(order='C'))
 
 

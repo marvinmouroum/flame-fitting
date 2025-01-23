@@ -1,1 +1,6 @@
 *.pyc
+.codegpt
+.DS_Store
+/.venv
+/output
+/models

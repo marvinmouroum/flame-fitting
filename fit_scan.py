@@ -13,8 +13,10 @@ For comments or questions, please email us at flame@tue.mpg.de
 import numpy as np
 import chumpy as ch
 from os.path import join
+import pickle
+import os
 
-from psbody.mesh import Mesh
+from psbody_mac.mesh import Mesh
 from smpl_webuser.serialization import load_model
 from sbody.mesh_distance import ScanToMesh
 from sbody.robustifiers import GMOf
@@ -171,10 +173,13 @@ def fit_scan(  scan,                        # input scan
 
 def run_fitting():
     # input scan
-    scan_path = './data/scan.obj'
+    scan_path = './data/MarvinKopf.obj'
+
+    # filename for output
+    filename = os.path.basename(scan_path).split('.')[0]
 
     # landmarks of the scan
-    scan_lmk_path = './data/scan_lmks.npy'
+    scan_lmk_path = './data/' + filename + '_lmks.npy'
 
     # measurement unit of landmarks ['m', 'cm', 'mm', 'NA'] 
     # When using option 'NA', the scale of the scan will be estimated by rigidly aligning model and scan landmarks
@@ -247,12 +252,17 @@ def run_fitting():
                                         shape_num=300, expr_num=100, opt_options=opt_options ) # options
 
     # write result
-    output_path = join( output_dir, 'fit_scan_result.obj' )
+    output_path = join( output_dir, filename + '_fit_scan_result.obj' )
     write_simple_obj( mesh_v=mesh_v, mesh_f=mesh_f, filepath=output_path, verbose=False )
-    print('output mesh saved to: ', output_path) 
+    print('output mesh saved to: ', output_path)
+
+    # Save the parameters
+    params_path = join(output_dir, filename + '_fit_scan_result_params.pkl')
+    with open(params_path, 'wb') as f:
+        pickle.dump(parms, f)
 
     # output scaled scan for reference (output scan fit and the scan should be spatially aligned)
-    output_path = join( output_dir, 'scan_scaled.obj' )    
+    output_path = join( output_dir, filename + '_scan_scaled.obj' )    
     write_simple_obj( mesh_v=scan.v, mesh_f=scan.f, filepath=output_path, verbose=False )
 
 # -----------------------------------------------------------------------------
